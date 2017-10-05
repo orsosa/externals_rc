@@ -5,8 +5,8 @@ def NuQ2ToEpTh(Nu,Q2):
     return [E-Nu, 2*degrees(asin( sqrt(Q2/(4*E*(E-Nu))) ))]
 
 
-def XbQ2ToEpTh(Xb,Q2): 
-    return [E- Q2/(2*Mp*Xb), 2*degrees(asin( sqrt( Q2/(4*E*(E-Q2/(2*Mp*Xb))) ) ) )]
+def XbQ2ToEpTh(Xb,Q2):
+    return [E- Q2/(2*Mp*Xb), 2*degrees(asin( sqrt( Q2/(4*E*(E-Q2/(2*Mp*Xb)) ) ) ) ) ]
 
 print """RUNPLAN for CLAS hadronization experiment
  inclusive:
@@ -25,10 +25,10 @@ for l in f:
 Mp=0.93827
 E=5.014
 
-
 BinsOut=[]
 if 'Xb' in BinsIn.keys() and 'Q2' in BinsIn.keys():
     pairs=tuple(  ((x,y) for x in BinsIn["Xb"] for y in BinsIn["Q2"]) )
+    pairs=filter(lambda x: sqrt( x[1]/(4*E*(E-x[1]/(2*Mp*x[0])) ) )<=1 ,filter(lambda x: (E - x[1]/2/Mp/x[0])>0,pairs))
     BinsOut=map(lambda x: XbQ2ToEpTh(x[0],x[1]),pairs)        
 
 if 'Nu' in BinsIn.keys() and 'Q2' in BinsIn.keys():
